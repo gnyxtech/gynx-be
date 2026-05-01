@@ -25,9 +25,9 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(process.env.port!);
+  await app.listen(process.env.PORT!);
   console.log(
-    `Server listen on : http://localhost:${process.env.port}/api/docs`,
+    `Server listen on : http://localhost:${process.env.PORT}/api/docs`,
   );
 }
 bootstrap();

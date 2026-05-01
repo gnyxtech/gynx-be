@@ -3,6 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CareerModule } from './career/career.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -23,8 +28,34 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         },
       }),
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 1,
+      },
+    ]),
+
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      },
+    }),
+    CareerModule,
+    EmailModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}
