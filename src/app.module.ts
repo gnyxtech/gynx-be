@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CareerModule } from './career/career.module';
@@ -21,7 +19,7 @@ import { EmailModule } from './email/email.module';
         url: config.get<string>('SUPABASE_URL'),
 
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: false,
 
         ssl: {
           rejectUnauthorized: false,
@@ -49,9 +47,8 @@ import { EmailModule } from './email/email.module';
     CareerModule,
     EmailModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
