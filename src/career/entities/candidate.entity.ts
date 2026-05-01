@@ -10,6 +10,9 @@ export class Candidate {
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @Column({ nullable: true })
+  jobId!: number;
+
   @Column()
   fullName!: string;
 

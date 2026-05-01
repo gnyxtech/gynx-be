@@ -8,6 +8,10 @@ import {
 } from 'class-validator';
 
 export class CreateCandidateDto {
+  @ApiProperty({ example: 10001 })
+  @IsNotEmpty()
+  jobId!: number;
+
   @ApiProperty({ example: 'Yashwant Kargwal' })
   @IsString()
   @IsNotEmpty()
